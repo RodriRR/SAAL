@@ -23,7 +23,8 @@ class CategoryAdapter(private val clickListener: CategoryListener) : ListAdapter
     class ViewHolder private constructor(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Category, clickListener: CategoryListener) {
-            binding.name = item.name
+            binding.category = item
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -54,6 +55,6 @@ class UsuariosDiffCallBack : DiffUtil.ItemCallback<Category>() {
     }
 }
 
-class CategoryListener(val clickListener: (category: Category) -> Unit) {
-    fun onClick(category: Category) = clickListener(category)
+class CategoryListener(val clickListener: (category: Category, view : Int) -> Unit) {
+    fun onClick(category: Category, view : Int) = clickListener(category,view)
 }

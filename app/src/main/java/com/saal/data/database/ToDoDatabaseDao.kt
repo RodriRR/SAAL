@@ -22,4 +22,10 @@ interface ToDoDatabaseDao {
 
     @Delete
     suspend  fun deleteTask(task : Task)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertNewCategory(category : Category)
+
+    @Delete
+    suspend  fun deleteCategory(category: Category)
 }

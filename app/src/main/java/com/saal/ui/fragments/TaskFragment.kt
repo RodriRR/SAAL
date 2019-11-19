@@ -42,6 +42,10 @@ class TaskFragment : Fragment() {
             showDialogCreate()
         }
 
+        binding.bar.setOnClickListener {
+            showBottomSheet()
+        }
+
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -74,6 +78,14 @@ class TaskFragment : Fragment() {
         var dialog = builder.create()
         dialog.show()
 
+    }
+
+    fun showBottomSheet() {
+        val bottomSheet = CategoryBottomSheetDialogFragment.newInstance()
+        bottomSheet.show(
+            fragmentManager!!,
+            "HOLA"
+        )
     }
 
 

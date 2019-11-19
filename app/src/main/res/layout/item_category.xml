@@ -7,13 +7,17 @@
     <data>
 
         <variable
-                name="name"
-                type="String"/>
+                name="category"
+                type="com.saal.data.model.Category"/>
+
+        <variable
+                name="clickListener"
+                type="com.saal.ui.adapters.CategoryListener"/>
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginBottom="@dimen/space_5dp">
@@ -22,12 +26,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_22sp"
-                android:text="@{name}"
+                android:text="@{category.name}"
                 android:id="@+id/nameTv"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+        <FrameLayout android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:background="@drawable/ic_delete"
+                     app:layout_constraintRight_toRightOf="parent"
+                     app:layout_constraintTop_toTopOf="parent"
+                     android:onClick="@{() -> clickListener.onClick(category,2)}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

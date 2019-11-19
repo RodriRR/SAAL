@@ -23,6 +23,7 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
 
     val titleNewTask = MutableLiveData<String>("")
     val descriptionNewTask = MutableLiveData<String>("")
+    val nameNewCategory = MutableLiveData<String>("")
 
     fun createNewTask(id : Int) {
         coroutineScope.launch {
@@ -41,6 +42,28 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
         coroutineScope.launch {
             try {
                 repo.deleteTask(task)
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun createNewCategory() {
+        coroutineScope.launch {
+            val name = nameNewCategory.value
+            val category = Category(0,name.toString())
+            try {
+                repo.insertNewCategory(category)
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun deleteCategory(category : Category) {
+        coroutineScope.launch {
+            try {
+                repo.deleteCategory(category)
             } catch (e: Exception) {
                 println(e)
             }

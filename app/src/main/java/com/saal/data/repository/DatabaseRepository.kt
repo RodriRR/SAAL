@@ -13,8 +13,12 @@ interface DatabaseRepository {
 
     fun getCategories(): LiveData<List<Category>>
     fun getTasks(): LiveData<List<Task>>
+
     suspend fun insertNewTask(task : Task)
     suspend fun deleteTask(task : Task)
+
+    suspend fun insertNewCategory(category : Category)
+    suspend fun deleteCategory(category: Category)
 }
 
 class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
@@ -46,5 +50,13 @@ class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
 
     override suspend fun deleteTask(task: Task) {
         todoDatabase.deleteTask(task)
+    }
+
+    override suspend fun insertNewCategory(category: Category) {
+        todoDatabase.insertNewCategory(category)
+    }
+
+    override suspend fun deleteCategory(category: Category) {
+        todoDatabase.deleteCategory(category)
     }
 }
