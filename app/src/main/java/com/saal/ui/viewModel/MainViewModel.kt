@@ -3,6 +3,7 @@ package com.saal.ui.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.saal.data.model.Category
+import com.saal.data.model.Task
 import com.saal.data.repository.DatabaseRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,20 +19,38 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
     private val repo = repo
 
     var categories = repo.getCategories()
+    var tasks = repo.getTasks()
 
-    init {
-        //getCategories()
-    }
+    val titleNewTask = MutableLiveData<String>("")
+    val descriptionNewTask = MutableLiveData<String>("")
 
-    /*fun getCategories() {
+    fun createNewTask(id : Int) {
         coroutineScope.launch {
-            // Get the Deferred object for our Retrofit request
+            val title = titleNewTask.value
+            val description = descriptionNewTask.value
+            val task = Task(id,title.toString(),description.toString())
             try {
-                categories.postValue(repo.dbGetCategories().value)
+                repo.insertNewTask(task)
             } catch (e: Exception) {
-                println(e.toString())
+                println(e)
             }
         }
-    }*/
+    }
+
+    fun deleteTask(task : Task) {
+        coroutineScope.launch {
+            try {
+                repo.deleteTask(task)
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun clearEditTexts(){
+        titleNewTask.value = ""
+        descriptionNewTask.value = ""
+    }
+
 
 }

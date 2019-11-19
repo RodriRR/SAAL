@@ -1,9 +1,9 @@
 package com.saal.data.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Query
+import androidx.room.*
 import com.saal.data.model.Category
+import com.saal.data.model.Task
 
 /**
  * Defines methods for using the SleepNight class with Room.
@@ -13,4 +13,13 @@ interface ToDoDatabaseDao {
 
     @Query("SELECT * FROM category")
     fun getCategories() : LiveData<List<Category>>
+
+    @Query("SELECT * FROM task")
+    fun getTasks() : LiveData<List<Task>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertNewTask(task : Task)
+
+    @Delete
+    suspend  fun deleteTask(task : Task)
 }

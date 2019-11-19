@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="task"
+                type="com.saal.data.model.Task"/>
+
+        <variable
+                name="clickListener" type="com.saal.ui.adapters.TasksListener"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/space_5dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_22sp"
+                android:text="@{task.title}"
+                android:id="@+id/nameTv"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_22sp"
+                setInt="@{task.id}"
+                android:id="@+id/idTv"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/nameTv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <FrameLayout android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:background="@drawable/ic_edit"
+                     app:layout_constraintLeft_toRightOf="@id/idTv"
+                     app:layout_constraintTop_toTopOf="parent"
+                     android:id="@+id/edit"
+                     android:onClick="@{() -> clickListener.onClick(task,1)}"
+        />
+
+        <FrameLayout android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:background="@drawable/ic_delete"
+                     app:layout_constraintRight_toRightOf="parent"
+                     app:layout_constraintTop_toTopOf="parent"
+                     android:id="@+id/delete"
+                     android:onClick="@{() -> clickListener.onClick(task,2)}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

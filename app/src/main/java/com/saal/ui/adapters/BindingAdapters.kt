@@ -1,11 +1,24 @@
 package com.saal.ui.adapters
 
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.saal.data.model.Category
+import com.saal.data.model.Task
 
-@BindingAdapter("setListData")
-fun setListData(view: RecyclerView, categories : List<Category>?) {
+@BindingAdapter("setListDataCategory")
+fun setListDataCategory(view: RecyclerView, categories : List<Category>?) {
         var adapter = view.adapter as CategoryAdapter
         adapter.submitList(categories)
+}
+
+@BindingAdapter("setListDataTask")
+fun setListDataTask(view: RecyclerView, task : List<Task>?) {
+        var adapter = view.adapter as TasksAdapter
+        adapter.submitList(task)
+}
+
+@BindingAdapter("setInt")
+fun setInt(view: TextView, int : Int) {
+        view.text = int.toString()
 }

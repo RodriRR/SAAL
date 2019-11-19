@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.saal.data.model.Category
+import com.saal.data.model.Task
 
 
 /**
@@ -14,7 +15,7 @@ import com.saal.data.model.Category
  * This pattern is pretty much the same for any database,
  * so you can reuse it.
  */
-@Database(entities = [Category::class], version = 1, exportSchema = false)
+@Database(entities = [Category::class,Task::class], version = 1, exportSchema = false)
 abstract class ToDoDatabase : RoomDatabase() {
 
     abstract val todoDatabaseDao: ToDoDatabaseDao
@@ -35,7 +36,6 @@ abstract class ToDoDatabase : RoomDatabase() {
                         "todo.db"
                     )
                         .createFromAsset("databases/todo.db")
-                        .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
                 }

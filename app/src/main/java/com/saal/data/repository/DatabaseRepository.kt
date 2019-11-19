@@ -6,27 +6,45 @@ import androidx.lifecycle.MutableLiveData
 import com.saal.data.database.ToDoDatabase
 import com.saal.data.database.ToDoDatabaseDao
 import com.saal.data.model.Category
+import com.saal.data.model.Task
 
 
 interface DatabaseRepository {
 
     fun getCategories(): LiveData<List<Category>>
+    fun getTasks(): LiveData<List<Task>>
+    suspend fun insertNewTask(task : Task)
+    suspend fun deleteTask(task : Task)
 }
 
 class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
 
     private var todoDatabase: ToDoDatabaseDao
     private var categories : LiveData<List<Category>>
+    private var tasks : LiveData<List<Task>>
 
     init {
         val database: ToDoDatabase = ToDoDatabase.getInstance(application.applicationContext)
         todoDatabase = database.todoDatabaseDao
         categories = todoDatabase.getCategories()
-
+        tasks = todoDatabase.getTasks()
     }
 
     override fun getCategories(): LiveData<List<Category>> {
         println(categories.value.toString())
         return categories
+    }
+
+    override fun getTasks(): LiveData<List<Task>> {
+        println(tasks.value.toString())
+        return tasks
+    }
+
+    override suspend fun insertNewTask(task : Task) {
+        todoDatabase.insertNewTask(task)
+    }
+
+    override suspend fun deleteTask(task: Task) {
+        todoDatabase.deleteTask(task)
     }
 }
