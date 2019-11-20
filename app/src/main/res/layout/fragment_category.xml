@@ -11,14 +11,28 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:background="@color/colorOnSurface"
+            android:paddingTop="@dimen/space_10dp">
 
         <EditText
+                android:paddingLeft="@dimen/space_10dp"
+                android:paddingRight="@dimen/space_10dp"
+                android:paddingTop="@dimen/space_5dp"
+                android:paddingBottom="@dimen/space_5dp"
+                android:gravity="center"
+                android:background="@drawable/new_category_background"
+                android:stateListAnimator="@null"
                 android:id="@+id/addCategoryEt"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
+                android:maxLength="25"
+                android:fontFamily="@font/roboto_thin"
+                android:textColor="@color/title"
+                android:textColorHint="@color/title"
                 android:layout_height="wrap_content"
                 android:text="@={viewmodel.nameNewCategory}"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:hint="@string/add_category"/>
 
@@ -27,20 +41,30 @@
                      android:background="@drawable/ic_plus"
                      app:layout_constraintRight_toRightOf="parent"
                      app:layout_constraintTop_toTopOf="parent"
+                     app:layout_constraintLeft_toRightOf="@+id/addCategoryEt"
                      app:layout_constraintBottom_toBottomOf="@+id/addCategoryEt"
                      android:id="@+id/addButton"
-                     android:layout_marginRight="@dimen/space_30dp"
+                     android:layout_marginRight="@dimen/space_20dp"
                      android:onClick="@{() -> viewmodel.createNewCategory(0)}"/>
+
+        <FrameLayout android:layout_width="match_parent"
+                     android:layout_height="1dp"
+                     android:background="#6d6d6d"
+                     app:layout_constraintTop_toBottomOf="@id/addCategoryEt"
+                     app:layout_constraintLeft_toLeftOf="parent"
+                     app:layout_constraintRight_toRightOf="parent"
+                     android:id="@+id/separator_first" android:layout_marginTop="16dp"/>
 
 
         <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="@dimen/space_20dp"
                 android:id="@+id/category_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/space_10dp"
                 setListDataCategory="@{viewmodel.categories}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/addCategoryEt"
+                app:layout_constraintTop_toBottomOf="@id/separator_first"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
 

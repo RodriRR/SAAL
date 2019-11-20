@@ -9,38 +9,48 @@
                 type="com.saal.ui.viewModel.MainViewModel"/>
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorBackground">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/coordinator"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/task_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space_10dp"
                 setListDataTask="@{viewmodel.tasks}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+
+            <com.google.android.material.bottomappbar.BottomAppBar
+                    app:hideOnScroll="false"
+                    android:backgroundTint="@color/colorOnSurface"
+                    android:id="@+id/bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    app:navigationIcon="@drawable/ic_menu"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:overScrollMode="ifContentScrolls"
+                    android:id="@+id/floating_action_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:srcCompat="@drawable/ic_plus"
+                    app:layout_anchor="@id/bar"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-                android:id="@+id/bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:navigationIcon="@drawable/ic_menu"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floating_action_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:srcCompat="@drawable/ic_plus"
-                app:layout_anchor="@id/bar"/>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
