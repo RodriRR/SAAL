@@ -1,5 +1,7 @@
 package com.saal.ui.fragments
 
+import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -10,8 +12,10 @@ import com.saal.ui.adapters.TasksListener
 import com.saal.ui.viewModel.MainViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import android.view.LayoutInflater
+import com.saal.R
 import com.saal.data.model.Task
 import com.saal.databinding.ItemCreateTaskBinding
+import kotlinx.android.synthetic.main.item_create_task.view.*
 
 
 /**
@@ -55,20 +59,26 @@ class TaskFragment : Fragment() {
 
     private fun showDialogCreate(){
         val binding =  ItemCreateTaskBinding.inflate(layoutInflater)
-        val builder = MaterialAlertDialogBuilder(context)
+        val builder = MaterialAlertDialogBuilder(context,R.style.AlertDialogCustom)
         builder.setView(binding.root)
         binding.viewmodel = viewModel
         builder.setPositiveButton("Create") { _, _ ->
             viewModel.createNewTask(0)
         }
+        builder.setNegativeButton("Cancel") { _, _ ->
+        }
         var dialog = builder.create()
         dialog.show()
-
+        dialog.getButton(Dialog.BUTTON_NEGATIVE).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(Color.WHITE)
+        dialog.getButton(Dialog.BUTTON_POSITIVE).setTextColor(Color.GREEN)
     }
 
     private fun showDialogEdit(task: Task){
         val binding =  ItemCreateTaskBinding.inflate(layoutInflater)
-        val builder = MaterialAlertDialogBuilder(context)
+        val builder = MaterialAlertDialogBuilder(context,R.style.AlertDialogCustom)
         builder.setView(binding.root)
 
         viewModel.titleNewTask.value = task.title
@@ -78,8 +88,15 @@ class TaskFragment : Fragment() {
         builder.setPositiveButton("Edit") { _, _ ->
             viewModel.createNewTask(task.id)
         }
+        builder.setNegativeButton("Cancel") { _, _ ->
+        }
         var dialog = builder.create()
         dialog.show()
+        dialog.getButton(Dialog.BUTTON_NEGATIVE).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(Color.WHITE)
+        dialog.getButton(Dialog.BUTTON_POSITIVE).setTextColor(Color.CYAN)
 
     }
 

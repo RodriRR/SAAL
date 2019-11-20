@@ -8,35 +8,55 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_10dp">
 
         <TextView
+                android:textSize="17sp"
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/title"
+                android:fontFamily="@font/roboto_medium"
                 android:text="@string/title"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/titleEt"/>
 
         <EditText
+                android:textSize="15sp"
+                android:textColor="@color/title"
+                android:layout_marginTop="@dimen/space_5dp"
+                android:background="@null"
+                android:hint="@string/add_title"
                 android:id="@+id/titleEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_thin"
                 android:text="@={viewmodel.titleNewTask}"
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
 
         <TextView
+                android:textSize="17sp"
+                android:layout_marginTop="@dimen/space_10dp"
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/description"
+                android:textColor="@color/title"
+                android:fontFamily="@font/roboto_medium"
                 app:layout_constraintTop_toBottomOf="@+id/titleEt"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
         <EditText
+                android:textSize="15sp"
+                android:textColor="@color/title"
+                android:layout_marginTop="@dimen/space_5dp"
+                android:fontFamily="@font/roboto_thin"
+                android:background="@null"
+                android:hint="@string/add_description"
                 android:id="@+id/descriptionEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

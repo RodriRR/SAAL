@@ -22,5 +22,10 @@
         <item name="android:background">@drawable/rounded_dialog</item>
     </style>
 
+    <style name="AlertDialogCustom" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:textColor">@color/title</item>
+        <item name="android:background">@color/colorOnSurface</item>
+    </style>
+
 
 </resources>
