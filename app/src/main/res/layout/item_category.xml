@@ -22,23 +22,44 @@
             android:orientation="vertical"
             android:layout_marginBottom="@dimen/space_5dp">
 
-        <TextView
+        <EditText
+                android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_22sp"
                 android:text="@{category.name}"
                 android:id="@+id/nameTv"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <FrameLayout android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:background="@drawable/ic_delete"
-                     app:layout_constraintRight_toRightOf="parent"
+                     android:background="@drawable/ic_edit"
+                     app:layout_constraintRight_toLeftOf="@id/deleteBt"
                      app:layout_constraintTop_toTopOf="parent"
-                     android:onClick="@{() -> clickListener.onClick(category,2)}"/>
+                     android:layout_marginRight="16dp"
+                     android:id="@+id/editFl"
+        />
+
+        <FrameLayout
+                android:id="@+id/deleteBt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_delete"
+                app:layout_constraintRight_toLeftOf="@id/editButton"
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="@{(view) -> clickListener.onClick(category,2,view,view)}"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/editButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_button"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="invisible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -29,10 +29,13 @@ class TaskFragment : Fragment() {
             when(view){
                 1 -> {
                     viewModel.clearEditTexts()
-                    showDialogEdit(task)}
+                    showDialogEdit(task)
+                }
                 2 -> viewModel.deleteTask(task)
             }
         })
+
+
 
         binding.taskList.adapter = adapter
         binding.viewmodel = viewModel

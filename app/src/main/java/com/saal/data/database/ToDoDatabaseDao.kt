@@ -28,4 +28,5 @@ interface ToDoDatabaseDao {
 
     @Delete
     suspend  fun deleteCategory(category: Category)
+
 }

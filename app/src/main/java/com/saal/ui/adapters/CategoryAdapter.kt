@@ -1,12 +1,15 @@
 package com.saal.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.saal.data.model.Category
 import com.saal.databinding.ItemCategoryBinding
+import org.w3c.dom.Text
 
 
 class CategoryAdapter(private val clickListener: CategoryListener) : ListAdapter<Category,
@@ -25,6 +28,9 @@ class CategoryAdapter(private val clickListener: CategoryListener) : ListAdapter
         fun bind(item: Category, clickListener: CategoryListener) {
             binding.category = item
             binding.clickListener = clickListener
+            binding.editFl.setOnClickListener {
+               clickListener.onClick(item,1,binding.nameTv,binding.editButton)
+            }
             binding.executePendingBindings()
         }
 
@@ -55,6 +61,6 @@ class UsuariosDiffCallBack : DiffUtil.ItemCallback<Category>() {
     }
 }
 
-class CategoryListener(val clickListener: (category: Category, view : Int) -> Unit) {
-    fun onClick(category: Category, view : Int) = clickListener(category,view)
+class CategoryListener(val clickListener: (category: Category, type : Int, editText : View, editButton : View) -> Unit) {
+    fun onClick(category: Category, type : Int, editText : View, editButton : View) = clickListener(category,type,editText,editButton)
 }

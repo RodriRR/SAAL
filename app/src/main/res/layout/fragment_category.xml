@@ -30,7 +30,7 @@
                      app:layout_constraintBottom_toBottomOf="@+id/addCategoryEt"
                      android:id="@+id/addButton"
                      android:layout_marginRight="@dimen/space_30dp"
-                     android:onClick="@{() -> viewmodel.createNewCategory()}"/>
+                     android:onClick="@{() -> viewmodel.createNewCategory(0)}"/>
 
 
         <androidx.recyclerview.widget.RecyclerView

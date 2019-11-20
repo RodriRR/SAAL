@@ -48,10 +48,10 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
         }
     }
 
-    fun createNewCategory() {
+    fun createNewCategory(id : Int) {
         coroutineScope.launch {
             val name = nameNewCategory.value
-            val category = Category(0,name.toString())
+            val category = Category(id,name.toString())
             try {
                 repo.insertNewCategory(category)
             } catch (e: Exception) {
@@ -73,6 +73,7 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
     fun clearEditTexts(){
         titleNewTask.value = ""
         descriptionNewTask.value = ""
+        nameNewCategory.value = ""
     }
 
 

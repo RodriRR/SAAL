@@ -25,8 +25,8 @@ class CategoryFragment : Fragment() {
         val binding = FragmentCategoryBinding.inflate(inflater)
 
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
-        val clickListener = CategoryListener { category : Category, view : Int ->
-            when(view){
+        val clickListener = CategoryListener { category : Category, type : Int, view : View, otherView : View ->
+            when(type){
                 1 -> {}
                 2 -> viewModel.deleteCategory(category)
             }
