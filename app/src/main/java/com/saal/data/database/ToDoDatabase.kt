@@ -15,7 +15,7 @@ import com.saal.data.model.Task
  * This pattern is pretty much the same for any database,
  * so you can reuse it.
  */
-@Database(entities = [Category::class,Task::class], version = 1, exportSchema = false)
+@Database(entities = [Category::class,Task::class], version = 2, exportSchema = false)
 abstract class ToDoDatabase : RoomDatabase() {
 
     abstract val todoDatabaseDao: ToDoDatabaseDao
@@ -35,7 +35,7 @@ abstract class ToDoDatabase : RoomDatabase() {
                         ToDoDatabase::class.java,
                         "todo.db"
                     )
-                        .createFromAsset("databases/todo.db")
+                        .createFromAsset("databases/todo.db").fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
                 }

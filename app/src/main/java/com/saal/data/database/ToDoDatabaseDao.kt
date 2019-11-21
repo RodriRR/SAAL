@@ -17,6 +17,9 @@ interface ToDoDatabaseDao {
     @Query("SELECT * FROM task")
     fun getTasks() : LiveData<List<Task>>
 
+    @Query("SELECT * from task where category_name LIKE :text")
+    fun getSearched(text : String) : List<Task>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewTask(task : Task)
 

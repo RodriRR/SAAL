@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainViewModel(repo: DatabaseRepository) : ViewModel() {
 
@@ -25,11 +26,18 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
     val descriptionNewTask = MutableLiveData<String>("")
     val nameNewCategory = MutableLiveData<String>("")
 
+    //Manage createTask
+    val categorySelected = MutableLiveData<Category>()
+
+    //Search
+    var searchText = MutableLiveData<String>("")
+    var searchTask = MutableLiveData<List<Task>>()
+
     fun createNewTask(id : Int) {
         coroutineScope.launch {
             val title = titleNewTask.value
             val description = descriptionNewTask.value
-            val task = Task(id,title.toString(),description.toString())
+            val task = Task(id,title.toString(),description.toString(), categorySelected.value!!.id,categorySelected.value!!.name)
             try {
                 repo.insertNewTask(task)
             } catch (e: Exception) {
@@ -76,5 +84,24 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
         nameNewCategory.value = ""
     }
 
+    fun prueba() : ArrayList<String>{
+        var prueba = arrayListOf<String>()
+        if(!categories.value.isNullOrEmpty()) {
+            var categories = categories.value
+            for (category in categories!!) {
+                prueba.add(category.name)
+            }
+        }
+        return prueba
+    }
 
+    fun getPrueba(){
+        coroutineScope.launch {
+            try {
+                searchTask.postValue(repo.getSearched(searchText.value!!))
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
 }

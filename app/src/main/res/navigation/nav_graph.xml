@@ -23,18 +23,14 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/taskFragment">
 
-    <fragment
-        android:id="@+id/categoryFragment"
-        android:name="com.saal.ui.fragments.CategoryFragment"
-        android:label="fragment_category"
-        tools:layout="@layout/fragment_category" >
-    </fragment>
-
-
     <fragment android:id="@+id/taskFragment"
               android:name="com.saal.ui.fragments.TaskFragment"
               android:label="TodoFragment"
-              tools:layout="@layout/fragment_task"/>
+              tools:layout="@layout/fragment_task">
+        <action android:id="@+id/action_taskFragment_to_searchFragment" app:destination="@id/searchFragment"/>
+    </fragment>
+    <fragment android:id="@+id/searchFragment" android:name="com.saal.ui.fragments.SearchFragment"
+              android:label="SearchFragment"/>
 
 
 </navigation>

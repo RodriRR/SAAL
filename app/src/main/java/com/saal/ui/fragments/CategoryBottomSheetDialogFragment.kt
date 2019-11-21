@@ -1,5 +1,7 @@
 package com.saal.ui.fragments
 
+import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import com.saal.ui.viewModel.MainViewModel
@@ -14,13 +16,24 @@ import com.saal.ui.adapters.CategoryAdapter
 import com.saal.ui.adapters.CategoryListener
 import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.graphics.Color
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.saal.R
+import com.saal.data.model.Task
+import com.saal.databinding.ItemCreateCategoryBinding
+import com.saal.databinding.ItemCreateTaskBinding
+import com.saal.ui.adapters.TasksAdapter
+import com.saal.ui.adapters.TasksListener
 
 
 class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
 
     constructor()
-    companion object{
+
+    companion object {
         fun newInstance() = CategoryBottomSheetDialogFragment()
     }
 
@@ -29,41 +42,61 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
 
     @Nullable
     @Override
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val binding = FragmentCategoryBinding.inflate(inflater)
 
+        setStyle(DialogFragment.STYLE_NO_FRAME, 0)
 
-        val clickListener = CategoryListener { category : Category, type : Int, editText : View, editButton : View ->
-            when(type){
-                //Edit
-                1 -> {
-                    //Focus EditText
-                    var editTextView = editText as EditText
-                    val pos = editTextView.text.length
-                    editTextView.setSelection(pos)
-                    editTextView.requestFocus()
-                    val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
-                    imm!!.showSoftInput(editTextView, SHOW_IMPLICIT)
-                    //Edit button
-                    editButton.visibility = View.VISIBLE
-                    editButton.setOnClickListener { vew : View ->
-                        viewModel.nameNewCategory.value = editTextView.text.toString()
-                        viewModel.createNewCategory(category.id)
-                        editButton.visibility = View.INVISIBLE
-                    }
-                }
-                //Remove
-                2 -> viewModel.deleteCategory(category)
-            }
+        //Click on a Category
+        val clickListener = CategoryListener {
+            dismiss()
+            showDialogEdit(it)
         }
+
+        //Controll add button
+        binding.addButton.setOnClickListener {
+            viewModel.createNewCategory(0)
+            val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+        }
+
+        //Set up Category adapter
         val adapter = CategoryAdapter(clickListener)
         binding.categoryList.adapter = adapter
+        var grid = binding.categoryList.layoutManager as GridLayoutManager
+        grid.spanCount = 2
+        binding.categoryList.layoutManager = grid
 
         binding.viewmodel = viewModel
-
         binding.lifecycleOwner = this
         return binding.root
+    }
+
+    private fun showDialogEdit(category: Category) {
+        val binding = ItemCreateCategoryBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(context, R.style.AlertDialogCustom)
+        builder.setView(binding.root)
+
+        viewModel.nameNewCategory.value = category.name
+
+        binding.viewmodel = viewModel
+        builder.setPositiveButton("OK") { _, _ ->
+            viewModel.createNewCategory(category.id)
+        }
+        builder.setNegativeButton("DELETE") { _, _ ->
+        }
+        var dialog = builder.create()
+        dialog.show()
+        dialog.getButton(Dialog.BUTTON_NEGATIVE).setOnClickListener {
+            viewModel.deleteCategory(category)
+            dialog.dismiss()
+        }
+        dialog.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(context!!.getColor(R.color.delete))
+        dialog.getButton(Dialog.BUTTON_POSITIVE).setTextColor(context!!.getColor(R.color.edit))
+
     }
 
 

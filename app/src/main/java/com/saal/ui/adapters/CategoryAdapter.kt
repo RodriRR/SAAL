@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.saal.data.model.Category
 import com.saal.databinding.ItemCategoryBinding
-import org.w3c.dom.Text
 
 
 class CategoryAdapter(private val clickListener: CategoryListener) : ListAdapter<Category,
-        CategoryAdapter.ViewHolder>(UsuariosDiffCallBack()) {
+        CategoryAdapter.ViewHolder>(CategoryDiffCallback()) {
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)
@@ -28,9 +28,6 @@ class CategoryAdapter(private val clickListener: CategoryListener) : ListAdapter
         fun bind(item: Category, clickListener: CategoryListener) {
             binding.category = item
             binding.clickListener = clickListener
-            binding.editFl.setOnClickListener {
-               clickListener.onClick(item,1,binding.nameTv,binding.editButton)
-            }
             binding.executePendingBindings()
         }
 
@@ -51,7 +48,7 @@ class CategoryAdapter(private val clickListener: CategoryListener) : ListAdapter
  * Used by ListAdapter to calculate the minumum number of changes between and old list and a new
  * list that's been passed to `submitList`.
  */
-class UsuariosDiffCallBack : DiffUtil.ItemCallback<Category>() {
+class CategoryDiffCallback : DiffUtil.ItemCallback<Category>() {
     override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
         return oldItem == newItem
     }
@@ -61,6 +58,6 @@ class UsuariosDiffCallBack : DiffUtil.ItemCallback<Category>() {
     }
 }
 
-class CategoryListener(val clickListener: (category: Category, type : Int, editText : View, editButton : View) -> Unit) {
-    fun onClick(category: Category, type : Int, editText : View, editButton : View) = clickListener(category,type,editText,editButton)
+class CategoryListener(val clickListener: (category: Category) -> Unit) {
+    fun onClick(category: Category) = clickListener(category)
 }

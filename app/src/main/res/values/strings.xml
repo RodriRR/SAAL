@@ -7,4 +7,5 @@
     <string name="delete">DELETE</string>
     <string name="add_title">Add a title</string>
     <string name="add_description">Add a description</string>
+    <string name="name">Name</string>
 </resources>

@@ -8,10 +8,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="@dimen/space_10dp">
 
         <TextView
+                android:focusableInTouchMode="true"
                 android:textSize="17sp"
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
@@ -24,21 +25,27 @@
                 app:layout_constraintBottom_toTopOf="@+id/titleEt"/>
 
         <EditText
+                android:paddingTop="@dimen/space_5dp"
+                android:paddingRight="@dimen/space_5dp"
+                android:paddingBottom="@dimen/space_5dp"
+                android:singleLine="false"
+                android:inputType="textCapSentences|textMultiLine"
+                android:textColorHint="@color/title"
                 android:textSize="15sp"
-                android:textColor="@color/title"
+                android:textColor="@color/description"
                 android:layout_marginTop="@dimen/space_5dp"
                 android:background="@null"
                 android:hint="@string/add_title"
                 android:id="@+id/titleEt"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:text="@={viewmodel.titleNewTask}"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintLeft_toLeftOf="parent"/>
 
         <TextView
+
                 android:textSize="17sp"
                 android:layout_marginTop="@dimen/space_10dp"
                 android:id="@+id/description"
@@ -51,8 +58,12 @@
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
         <EditText
+                android:padding="@dimen/space_5dp"
+                android:singleLine="false"
+                android:inputType="textCapSentences|textMultiLine"
+                android:textColorHint="@color/title"
                 android:textSize="15sp"
-                android:textColor="@color/title"
+                android:textColor="@color/description"
                 android:layout_marginTop="@dimen/space_5dp"
                 android:fontFamily="@font/roboto_thin"
                 android:background="@null"
@@ -63,8 +74,17 @@
                 android:text="@={viewmodel.descriptionNewTask}"
                 app:layout_constraintTop_toBottomOf="@+id/description"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="16dp"
+                android:id="@+id/category_list"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionEt"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                setListDataCategoryAddTask="@{viewmodel.categories}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

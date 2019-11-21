@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="category"
+                type="com.saal.data.model.Category"/>
+
+        <variable
+                name="viewmodel"
+                type="com.saal.ui.viewModel.MainViewModel"/>
+
+        <variable
+                name="clickListener" type="com.saal.ui.adapters.CategoryListener"/>
+
+    </data>
+
+    <com.google.android.material.chip.Chip
+            android:layout_marginRight="@dimen/space_5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{category.name}"
+            android:onClick="@{() -> clickListener.onClick(category)}"/>
+
+</layout>
