@@ -2,6 +2,7 @@ package com.saal.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.saal.data.database.ToDoDatabase
 import com.saal.data.database.ToDoDatabaseDao
 import com.saal.data.model.Category
@@ -76,5 +77,6 @@ class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
         todoDatabase.updateCategory(category.name, category.id)
         todoDatabase.updateCategoryTask(category.name, category.id)
     }
+
 }
 

@@ -97,4 +97,9 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
         descriptionNewTask.value = ""
         nameNewCategory.value = ""
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
 }

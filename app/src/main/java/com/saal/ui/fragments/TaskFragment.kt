@@ -69,7 +69,6 @@ class TaskFragment : Fragment() {
         })
 
 
-
         binding.taskList.adapter = adapter
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
@@ -151,6 +150,5 @@ class TaskFragment : Fragment() {
         MaterialAlertDialogBuilder(context).setTitle("Error").setMessage(error)
             .setPositiveButton("Ok") { _, _ -> }.show()
     }
-
 
 }
