@@ -58,7 +58,11 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
 
         //Controll add button
         binding.addButton.setOnClickListener {
-            viewModel.createNewCategory(0)
+            if(viewModel.nameNewCategory.value.isNullOrEmpty() || viewModel.nameNewCategory.value!!.trim() == ""){
+             showdialogError("Please enter a correct name")
+            }else {
+                viewModel.createNewCategory(0)
+            }
             val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view!!.windowToken, 0)
         }
@@ -84,7 +88,7 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
 
         binding.viewmodel = viewModel
         builder.setPositiveButton("OK") { _, _ ->
-            viewModel.createNewCategory(category.id)
+            viewModel.updateCategory(category)
         }
         builder.setNegativeButton("DELETE") { _, _ ->
         }
@@ -97,6 +101,11 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
         dialog.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(context!!.getColor(R.color.delete))
         dialog.getButton(Dialog.BUTTON_POSITIVE).setTextColor(context!!.getColor(R.color.edit))
 
+    }
+
+    fun showdialogError(error : String){
+        val builder = MaterialAlertDialogBuilder(context).setTitle("Error").setMessage(error)
+            .setPositiveButton("Ok",{_,_->}).show()
     }
 
 

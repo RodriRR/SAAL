@@ -21,16 +21,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/taskFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment android:id="@+id/taskFragment"
               android:name="com.saal.ui.fragments.TaskFragment"
               android:label="TodoFragment"
               tools:layout="@layout/fragment_task">
-        <action android:id="@+id/action_taskFragment_to_searchFragment" app:destination="@id/searchFragment"/>
     </fragment>
-    <fragment android:id="@+id/searchFragment" android:name="com.saal.ui.fragments.SearchFragment"
-              android:label="SearchFragment"/>
+    <fragment android:id="@+id/splashFragment" android:name="es.represa.highstreetmobile.ui.fragment.SplashFragment"
+              android:label="SplashFragment">
+        <action android:id="@+id/action_splashFragment_to_taskFragment" app:destination="@id/taskFragment"/>
+    </fragment>
 
 
 </navigation>

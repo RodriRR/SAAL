@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
     entity = Category::class,
     parentColumns = arrayOf("id"),
     childColumns = arrayOf("category_id"),
-    onDelete = ForeignKey.CASCADE)]
+    onDelete = ForeignKey.NO_ACTION)]
 )
 data class Task(
     @PrimaryKey(autoGenerate = true) @NonNull

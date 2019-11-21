@@ -38,8 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                app:navigationIcon="@drawable/ic_menu"
-                app:menu="@menu/menu"/>
+                app:navigationIcon="@drawable/ic_menu"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:backgroundTint="@color/colorOnSurface"

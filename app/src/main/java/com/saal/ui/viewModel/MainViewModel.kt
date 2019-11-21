@@ -29,10 +29,6 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
     //Manage createTask
     val categorySelected = MutableLiveData<Category>()
 
-    //Search
-    var searchText = MutableLiveData<String>("")
-    var searchTask = MutableLiveData<List<Task>>()
-
     fun createNewTask(id : Int) {
         coroutineScope.launch {
             val title = titleNewTask.value
@@ -71,7 +67,19 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
     fun deleteCategory(category : Category) {
         coroutineScope.launch {
             try {
+                repo.deleteTaskOfCategory(category)
                 repo.deleteCategory(category)
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun updateCategory(category : Category) {
+        coroutineScope.launch {
+            try {
+                category.name = nameNewCategory.value!!
+                repo.updateCategory(category)
             } catch (e: Exception) {
                 println(e)
             }
@@ -82,26 +90,5 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
         titleNewTask.value = ""
         descriptionNewTask.value = ""
         nameNewCategory.value = ""
-    }
-
-    fun prueba() : ArrayList<String>{
-        var prueba = arrayListOf<String>()
-        if(!categories.value.isNullOrEmpty()) {
-            var categories = categories.value
-            for (category in categories!!) {
-                prueba.add(category.name)
-            }
-        }
-        return prueba
-    }
-
-    fun getPrueba(){
-        coroutineScope.launch {
-            try {
-                searchTask.postValue(repo.getSearched(searchText.value!!))
-            } catch (e: Exception) {
-                println(e)
-            }
-        }
     }
 }

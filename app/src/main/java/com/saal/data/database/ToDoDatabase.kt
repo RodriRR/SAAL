@@ -35,7 +35,7 @@ abstract class ToDoDatabase : RoomDatabase() {
                         ToDoDatabase::class.java,
                         "todo.db"
                     )
-                        .createFromAsset("databases/todo.db").fallbackToDestructiveMigration()
+                        .createFromAsset("databases/todo.db")
                         .build()
                     INSTANCE = instance
                 }

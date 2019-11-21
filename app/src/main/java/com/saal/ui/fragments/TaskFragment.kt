@@ -53,11 +53,10 @@ class TaskFragment : Fragment() {
                 showDialogCreate()
             }
         }
+
+
         binding.bar.setNavigationOnClickListener {
-            when(it.id){
-                R.id.app_bar_search -> showBottomSheet()
-                else -> findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToSearchFragment())
-            }
+           showBottomSheet()
         }
 
 

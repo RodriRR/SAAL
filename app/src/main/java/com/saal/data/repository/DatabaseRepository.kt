@@ -20,7 +20,10 @@ interface DatabaseRepository {
     suspend fun insertNewCategory(category : Category)
     suspend fun deleteCategory(category: Category)
 
-    suspend fun getSearched(text : String) : List<Task>
+    suspend fun deleteTaskOfCategory(category : Category)
+
+    suspend fun updateCategory(category: Category)
+
 }
 
 class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
@@ -62,7 +65,13 @@ class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
         todoDatabase.deleteCategory(category)
     }
 
-    override suspend fun getSearched(text: String) : List<Task>{
-        return todoDatabase.getSearched(text)
+    override suspend fun deleteTaskOfCategory(category: Category) {
+        todoDatabase.deleteTaskOfCategory(category.id)
+    }
+
+    override suspend fun updateCategory(category: Category) {
+        todoDatabase.updateCategory(category.name,category.id)
+        todoDatabase.updateCategoryTask(category.name,category.id)
     }
 }
+

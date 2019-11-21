@@ -44,8 +44,7 @@
                      app:layout_constraintLeft_toRightOf="@+id/addCategoryEt"
                      app:layout_constraintBottom_toBottomOf="@+id/addCategoryEt"
                      android:id="@+id/addButton"
-                     android:layout_marginRight="@dimen/space_20dp"
-                     android:onClick="@{() -> viewmodel.createNewCategory(0)}"/>
+                     android:layout_marginRight="@dimen/space_20dp"/>
 
         <FrameLayout android:layout_width="match_parent"
                      android:layout_height="1dp"

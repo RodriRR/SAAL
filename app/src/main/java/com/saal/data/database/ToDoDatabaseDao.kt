@@ -17,9 +17,6 @@ interface ToDoDatabaseDao {
     @Query("SELECT * FROM task")
     fun getTasks() : LiveData<List<Task>>
 
-    @Query("SELECT * from task where category_name LIKE :text")
-    fun getSearched(text : String) : List<Task>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewTask(task : Task)
 
@@ -31,5 +28,15 @@ interface ToDoDatabaseDao {
 
     @Delete
     suspend  fun deleteCategory(category: Category)
+
+
+    @Query("DELETE FROM task WHERE category_id = :id")
+    fun deleteTaskOfCategory(id : Int)
+
+    @Query("UPDATE category SET name = :newName WHERE id = :id")
+    fun updateCategory(newName : String, id : Int)
+
+    @Query("UPDATE task SET category_name= :newName WHERE category_id = :id")
+    fun updateCategoryTask(newName : String, id : Int)
 
 }
