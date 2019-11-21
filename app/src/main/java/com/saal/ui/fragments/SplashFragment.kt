@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.saal.databinding.FragmentSplashBinding
 import com.saal.ui.viewModel.MainViewModel
-import es.represa.highstreetmobile.ui.fragment.SplashFragmentDirections
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
