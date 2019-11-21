@@ -6,37 +6,37 @@ import com.saal.data.model.Category
 import com.saal.data.model.Task
 
 /**
- * Defines methods for using the SleepNight class with Room.
+ * Defines methods for using the ToDoDatabase class with Room.
  */
 @Dao
 interface ToDoDatabaseDao {
 
     @Query("SELECT * FROM category")
-    fun getCategories() : LiveData<List<Category>>
+    fun getCategories(): LiveData<List<Category>>
 
     @Query("SELECT * FROM task")
-    fun getTasks() : LiveData<List<Task>>
+    fun getTasks(): LiveData<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNewTask(task : Task)
+    suspend fun insertNewTask(task: Task)
 
     @Delete
-    suspend  fun deleteTask(task : Task)
+    suspend fun deleteTask(task: Task)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNewCategory(category : Category)
+    suspend fun insertNewCategory(category: Category)
 
     @Delete
-    suspend  fun deleteCategory(category: Category)
+    suspend fun deleteCategory(category: Category)
 
 
     @Query("DELETE FROM task WHERE category_id = :id")
-    fun deleteTaskOfCategory(id : Int)
+    fun deleteTaskOfCategory(id: Int)
 
     @Query("UPDATE category SET name = :newName WHERE id = :id")
-    fun updateCategory(newName : String, id : Int)
+    fun updateCategory(newName: String, id: Int)
 
     @Query("UPDATE task SET category_name= :newName WHERE category_id = :id")
-    fun updateCategoryTask(newName : String, id : Int)
+    fun updateCategoryTask(newName: String, id: Int)
 
 }

@@ -9,18 +9,15 @@ import com.saal.data.model.Task
 
 
 /**
- * A database that stores SleepNight information.
+ * A database that stores Tas and Categories information.
  * And a global method to get access to the database.
- *
- * This pattern is pretty much the same for any database,
- * so you can reuse it.
  */
-@Database(entities = [Category::class,Task::class], version = 2, exportSchema = false)
+@Database(entities = [Category::class, Task::class], version = 2, exportSchema = false)
 abstract class ToDoDatabase : RoomDatabase() {
 
     abstract val todoDatabaseDao: ToDoDatabaseDao
 
-    companion object{
+    companion object {
 
         @Volatile
         private var INSTANCE: ToDoDatabase? = null

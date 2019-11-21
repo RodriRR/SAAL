@@ -12,30 +12,30 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.saal.R
 import com.saal.data.model.Category
 import com.saal.data.model.Task
 import com.saal.databinding.ItemCreateTaskBinding
 import com.saal.ui.adapters.*
-import kotlinx.android.synthetic.main.item_create_task.view.*
 
 
 /**
- * This fragment shows the the status of the Mars real-estate web services transaction.
+ * This fragment shows the task when open the app
  */
 class TaskFragment : Fragment() {
 
     private val viewModel by sharedViewModel<MainViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val binding = FragmentTaskBinding.inflate(inflater)
 
         //Task Listener
-        val adapter = TasksAdapter(TasksListener { task : Task, view : Int ->
-            when(view){
+        val adapter = TasksAdapter(TasksListener { task: Task, view: Int ->
+            when (view) {
                 1 -> {
                     viewModel.clearEditTexts()
                     showDialogEdit(task)
@@ -46,9 +46,9 @@ class TaskFragment : Fragment() {
 
         //+ button
         binding.floatingActionButton.setOnClickListener {
-            if(viewModel.categories.value.isNullOrEmpty()){
-                showdialogError("You have to add a category first")
-            }else{
+            if (viewModel.categories.value.isNullOrEmpty()) {
+                showDialogError("You have to add a category first")
+            } else {
                 viewModel.clearEditTexts()
                 showDialogCreate()
             }
@@ -56,7 +56,7 @@ class TaskFragment : Fragment() {
 
 
         binding.bar.setNavigationOnClickListener {
-           showBottomSheet()
+            showBottomSheet()
         }
 
 
@@ -76,30 +76,30 @@ class TaskFragment : Fragment() {
         return binding.root
     }
 
-    private fun showDialogCreate(){
-        val binding =  ItemCreateTaskBinding.inflate(layoutInflater)
-        val builder = MaterialAlertDialogBuilder(context,R.style.AlertDialogCustom)
+    private fun showDialogCreate() {
+        val binding = ItemCreateTaskBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(context, R.style.AlertDialogCustom)
         builder.setView(binding.root)
 
-        val adapter = CategoryCreateTaskAdapter(CategoryListener{ category : Category ->
+        val adapter = CategoryCreateTaskAdapter(CategoryListener { category: Category ->
             viewModel.categorySelected.value = category
-            Toast.makeText(context,"You have selected ${category.name}",Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "You have selected ${category.name}", Toast.LENGTH_LONG).show()
         })
         binding.categoryList.adapter = adapter
         binding.categoryList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         binding.viewmodel = viewModel
         builder.setPositiveButton("Create") { _, _ ->
-            if(viewModel.categorySelected.value != null){
+            if (viewModel.categorySelected.value != null) {
                 viewModel.createNewTask(0)
-            }else{
-                showdialogError("You have to pick a category")
+            } else {
+                showDialogError("You have to pick a category")
             }
 
         }
         builder.setNegativeButton("Cancel") { _, _ ->
         }
-        var dialog = builder.create()
+        val dialog = builder.create()
         dialog.show()
         dialog.getButton(Dialog.BUTTON_NEGATIVE).setOnClickListener {
             dialog.dismiss()
@@ -108,14 +108,14 @@ class TaskFragment : Fragment() {
         dialog.getButton(Dialog.BUTTON_POSITIVE).setTextColor(context!!.getColor(R.color.edit))
     }
 
-    private fun showDialogEdit(task: Task){
-        val binding =  ItemCreateTaskBinding.inflate(layoutInflater)
-        val builder = MaterialAlertDialogBuilder(context,R.style.AlertDialogCustom)
+    private fun showDialogEdit(task: Task) {
+        val binding = ItemCreateTaskBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(context, R.style.AlertDialogCustom)
         builder.setView(binding.root)
 
-        val adapter = CategoryCreateTaskAdapter(CategoryListener{ category : Category ->
+        val adapter = CategoryCreateTaskAdapter(CategoryListener { category: Category ->
             viewModel.categorySelected.value = category
-            Toast.makeText(context,"You have selected ${category.name}",Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "You have selected ${category.name}", Toast.LENGTH_LONG).show()
         })
         binding.categoryList.adapter = adapter
         binding.categoryList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -129,7 +129,7 @@ class TaskFragment : Fragment() {
         }
         builder.setNegativeButton("Cancel") { _, _ ->
         }
-        var dialog = builder.create()
+        val dialog = builder.create()
         dialog.show()
         dialog.getButton(Dialog.BUTTON_NEGATIVE).setOnClickListener {
             dialog.dismiss()
@@ -139,17 +139,17 @@ class TaskFragment : Fragment() {
 
     }
 
-    fun showBottomSheet() {
+    private fun showBottomSheet() {
         val bottomSheet = CategoryBottomSheetDialogFragment.newInstance()
         bottomSheet.show(
             fragmentManager!!,
-            "HOLA"
+            "sheet"
         )
     }
 
-    fun showdialogError(error : String){
-        val builder = MaterialAlertDialogBuilder(context).setTitle("Error").setMessage(error)
-            .setPositiveButton("Ok",{_,_->}).show()
+    private fun showDialogError(error: String) {
+        MaterialAlertDialogBuilder(context).setTitle("Error").setMessage(error)
+            .setPositiveButton("Ok") { _, _ -> }.show()
     }
 
 

@@ -6,11 +6,16 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(  foreignKeys = [ForeignKey(
-    entity = Category::class,
-    parentColumns = arrayOf("id"),
-    childColumns = arrayOf("category_id"),
-    onDelete = ForeignKey.NO_ACTION)]
+/**
+ * Room Entity Task
+ */
+@Entity(
+    foreignKeys = [ForeignKey(
+        entity = Category::class,
+        parentColumns = arrayOf("id"),
+        childColumns = arrayOf("category_id"),
+        onDelete = ForeignKey.NO_ACTION
+    )]
 )
 data class Task(
     @PrimaryKey(autoGenerate = true) @NonNull

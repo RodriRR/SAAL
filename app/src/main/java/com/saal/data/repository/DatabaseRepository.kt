@@ -2,25 +2,28 @@ package com.saal.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.saal.data.database.ToDoDatabase
 import com.saal.data.database.ToDoDatabaseDao
 import com.saal.data.model.Category
 import com.saal.data.model.Task
 
-
+/**
+ * This interface and class is responsible for storing the objects returned by the ToDoDatabse API
+ * so that the corresponding viewmodels can access them. It contains the necessary methods to
+ * access the SQLite data.
+ */
 interface DatabaseRepository {
 
     fun getCategories(): LiveData<List<Category>>
     fun getTasks(): LiveData<List<Task>>
 
-    suspend fun insertNewTask(task : Task)
-    suspend fun deleteTask(task : Task)
+    suspend fun insertNewTask(task: Task)
+    suspend fun deleteTask(task: Task)
 
-    suspend fun insertNewCategory(category : Category)
+    suspend fun insertNewCategory(category: Category)
     suspend fun deleteCategory(category: Category)
 
-    suspend fun deleteTaskOfCategory(category : Category)
+    suspend fun deleteTaskOfCategory(category: Category)
 
     suspend fun updateCategory(category: Category)
 
@@ -29,8 +32,8 @@ interface DatabaseRepository {
 class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
 
     private var todoDatabase: ToDoDatabaseDao
-    private var categories : LiveData<List<Category>>
-    private var tasks : LiveData<List<Task>>
+    private var categories: LiveData<List<Category>>
+    private var tasks: LiveData<List<Task>>
 
     init {
         val database: ToDoDatabase = ToDoDatabase.getInstance(application.applicationContext)
@@ -49,7 +52,7 @@ class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
         return tasks
     }
 
-    override suspend fun insertNewTask(task : Task) {
+    override suspend fun insertNewTask(task: Task) {
         todoDatabase.insertNewTask(task)
     }
 
@@ -70,8 +73,8 @@ class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
     }
 
     override suspend fun updateCategory(category: Category) {
-        todoDatabase.updateCategory(category.name,category.id)
-        todoDatabase.updateCategoryTask(category.name,category.id)
+        todoDatabase.updateCategory(category.name, category.id)
+        todoDatabase.updateCategoryTask(category.name, category.id)
     }
 }
 

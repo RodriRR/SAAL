@@ -1,16 +1,16 @@
 package com.saal.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.saal.data.model.Category
 import com.saal.databinding.ItemCategoryBinding
 
-
+/**
+ * Adapter to show categories in our recyclerview locate at the BottomSheetFragment
+ */
 class CategoryAdapter(private val clickListener: CategoryListener) : ListAdapter<Category,
         CategoryAdapter.ViewHolder>(CategoryDiffCallback()) {
 
@@ -42,12 +42,6 @@ class CategoryAdapter(private val clickListener: CategoryListener) : ListAdapter
     }
 }
 
-/**
- * Callback for calculating the diff between two non-null items in a list.
- *
- * Used by ListAdapter to calculate the minumum number of changes between and old list and a new
- * list that's been passed to `submitList`.
- */
 class CategoryDiffCallback : DiffUtil.ItemCallback<Category>() {
     override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
         return oldItem == newItem

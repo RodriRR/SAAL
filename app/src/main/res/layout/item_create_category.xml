@@ -26,7 +26,8 @@
 
         <EditText
                 android:paddingTop="@dimen/space_5dp"
-                android:paddingRight="@dimen/space_5dp"
+                android:paddingEnd="@dimen/space_5dp"
+                android:paddingStart="@dimen/space_5dp"
                 android:paddingBottom="@dimen/space_5dp"
                 android:singleLine="false"
                 android:inputType="textCapSentences|textMultiLine"

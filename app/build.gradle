@@ -37,7 +37,7 @@ dependencies {
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc02"
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-alpha03'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-rc02'
 
     implementation "androidx.room:room-runtime:$version_room"
     kapt "androidx.room:room-compiler:$version_room" // For Kotlin use kapt instead of annotationProcessor

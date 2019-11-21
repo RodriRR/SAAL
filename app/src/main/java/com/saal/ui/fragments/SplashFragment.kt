@@ -1,4 +1,4 @@
-package es.represa.highstreetmobile.ui.fragment
+package com.saal.ui.fragments
 
 
 import android.os.Bundle
@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.saal.databinding.FragmentSplashBinding
 import com.saal.ui.viewModel.MainViewModel
+import es.represa.highstreetmobile.ui.fragment.SplashFragmentDirections
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
 /**
  * This fragment is responsible for displaying the loading screen.
- * A corroutine is launched that obtains a random quote to be shown in the login
  */
 class SplashFragment : Fragment() {
 

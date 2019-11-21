@@ -1,16 +1,15 @@
 package com.saal.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.saal.data.model.Category
 import com.saal.databinding.ItemCategoryAddTaskBinding
 
-
+/**
+ * Adapter to show categories as chip to select when create a new task
+ */
 class CategoryCreateTaskAdapter(private val clickListener: CategoryListener) : ListAdapter<Category,
         CategoryCreateTaskAdapter.ViewHolder>(CategoryDiffCallback()) {
 
@@ -22,7 +21,8 @@ class CategoryCreateTaskAdapter(private val clickListener: CategoryListener) : L
         return ViewHolder.from(parent)
     }
 
-    class ViewHolder private constructor(val binding: ItemCategoryAddTaskBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(val binding: ItemCategoryAddTaskBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Category, clickListener: CategoryListener) {
             binding.category = item

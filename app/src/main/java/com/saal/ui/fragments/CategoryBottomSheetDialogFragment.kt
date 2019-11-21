@@ -1,37 +1,29 @@
 package com.saal.ui.fragments
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import com.saal.ui.viewModel.MainViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import android.view.LayoutInflater
-import android.widget.EditText
 import androidx.annotation.Nullable
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.saal.data.model.Category
 import com.saal.databinding.FragmentCategoryBinding
 import com.saal.ui.adapters.CategoryAdapter
 import com.saal.ui.adapters.CategoryListener
-import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
 import android.content.Context.INPUT_METHOD_SERVICE
-import android.graphics.Color
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.saal.R
-import com.saal.data.model.Task
 import com.saal.databinding.ItemCreateCategoryBinding
-import com.saal.databinding.ItemCreateTaskBinding
-import com.saal.ui.adapters.TasksAdapter
-import com.saal.ui.adapters.TasksListener
 
-
-class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
-
-    constructor()
+/**
+ * Inflate the bottomSheetFragment
+ */
+class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
         fun newInstance() = CategoryBottomSheetDialogFragment()
@@ -56,11 +48,11 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
             showDialogEdit(it)
         }
 
-        //Controll add button
+        //Control add button
         binding.addButton.setOnClickListener {
-            if(viewModel.nameNewCategory.value.isNullOrEmpty() || viewModel.nameNewCategory.value!!.trim() == ""){
-             showdialogError("Please enter a correct name")
-            }else {
+            if (viewModel.nameNewCategory.value.isNullOrEmpty() || viewModel.nameNewCategory.value!!.trim() == "") {
+                showdialogError("Please enter a correct name")
+            } else {
                 viewModel.createNewCategory(0)
             }
             val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -70,7 +62,7 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
         //Set up Category adapter
         val adapter = CategoryAdapter(clickListener)
         binding.categoryList.adapter = adapter
-        var grid = binding.categoryList.layoutManager as GridLayoutManager
+        val grid = binding.categoryList.layoutManager as GridLayoutManager
         grid.spanCount = 2
         binding.categoryList.layoutManager = grid
 
@@ -92,7 +84,7 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
         }
         builder.setNegativeButton("DELETE") { _, _ ->
         }
-        var dialog = builder.create()
+        val dialog = builder.create()
         dialog.show()
         dialog.getButton(Dialog.BUTTON_NEGATIVE).setOnClickListener {
             viewModel.deleteCategory(category)
@@ -103,9 +95,9 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment {
 
     }
 
-    fun showdialogError(error : String){
-        val builder = MaterialAlertDialogBuilder(context).setTitle("Error").setMessage(error)
-            .setPositiveButton("Ok",{_,_->}).show()
+    private fun showdialogError(error: String) {
+        MaterialAlertDialogBuilder(context).setTitle("Error").setMessage(error)
+            .setPositiveButton("Ok") { _, _ -> }.show()
     }
 
 

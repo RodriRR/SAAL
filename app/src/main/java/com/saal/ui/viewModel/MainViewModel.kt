@@ -9,15 +9,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.collections.ArrayList
 
-class MainViewModel(repo: DatabaseRepository) : ViewModel() {
+/**
+ * This is the app main ViewModel that contains all de ui data
+ */
+class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
 
-    private val repo = repo
 
     var categories = repo.getCategories()
     var tasks = repo.getTasks()
@@ -29,11 +29,17 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
     //Manage createTask
     val categorySelected = MutableLiveData<Category>()
 
-    fun createNewTask(id : Int) {
+    fun createNewTask(id: Int) {
         coroutineScope.launch {
             val title = titleNewTask.value
             val description = descriptionNewTask.value
-            val task = Task(id,title.toString(),description.toString(), categorySelected.value!!.id,categorySelected.value!!.name)
+            val task = Task(
+                id,
+                title.toString(),
+                description.toString(),
+                categorySelected.value!!.id,
+                categorySelected.value!!.name
+            )
             try {
                 repo.insertNewTask(task)
             } catch (e: Exception) {
@@ -42,7 +48,7 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
         }
     }
 
-    fun deleteTask(task : Task) {
+    fun deleteTask(task: Task) {
         coroutineScope.launch {
             try {
                 repo.deleteTask(task)
@@ -52,10 +58,10 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
         }
     }
 
-    fun createNewCategory(id : Int) {
+    fun createNewCategory(id: Int) {
         coroutineScope.launch {
             val name = nameNewCategory.value
-            val category = Category(id,name.toString())
+            val category = Category(id, name.toString())
             try {
                 repo.insertNewCategory(category)
             } catch (e: Exception) {
@@ -64,7 +70,7 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
         }
     }
 
-    fun deleteCategory(category : Category) {
+    fun deleteCategory(category: Category) {
         coroutineScope.launch {
             try {
                 repo.deleteTaskOfCategory(category)
@@ -75,7 +81,7 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
         }
     }
 
-    fun updateCategory(category : Category) {
+    fun updateCategory(category: Category) {
         coroutineScope.launch {
             try {
                 category.name = nameNewCategory.value!!
@@ -86,7 +92,7 @@ class MainViewModel(repo: DatabaseRepository) : ViewModel() {
         }
     }
 
-    fun clearEditTexts(){
+    fun clearEditTexts() {
         titleNewTask.value = ""
         descriptionNewTask.value = ""
         nameNewCategory.value = ""

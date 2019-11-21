@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.saal.data.model.Task
 import com.saal.databinding.ItemTaskBinding
 
-
+/**
+ * Adapter to show task in the main fragments
+ */
 class TasksAdapter(private val clickListener: TasksListener) : ListAdapter<Task,
         TasksAdapter.ViewHolder>(TaskDiffCallBack()) {
 
@@ -39,12 +41,6 @@ class TasksAdapter(private val clickListener: TasksListener) : ListAdapter<Task,
     }
 }
 
-/**
- * Callback for calculating the diff between two non-null items in a list.
- *
- * Used by ListAdapter to calculate the minumum number of changes between and old list and a new
- * list that's been passed to `submitList`.
- */
 class TaskDiffCallBack : DiffUtil.ItemCallback<Task>() {
     override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
         return oldItem == newItem
@@ -55,6 +51,6 @@ class TaskDiffCallBack : DiffUtil.ItemCallback<Task>() {
     }
 }
 
-class TasksListener(val clickListener: (task: Task, view : Int) -> Unit) {
-    fun onClick(task: Task, view : Int) = clickListener(task,view)
+class TasksListener(val clickListener: (task: Task, view: Int) -> Unit) {
+    fun onClick(task: Task, view: Int) = clickListener(task, view)
 }
