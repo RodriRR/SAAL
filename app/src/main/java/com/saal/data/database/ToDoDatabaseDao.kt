@@ -29,7 +29,6 @@ interface ToDoDatabaseDao {
     @Delete
     suspend fun deleteCategory(category: Category)
 
-
     @Query("DELETE FROM task WHERE category_id = :id")
     fun deleteTaskOfCategory(id: Int)
 
@@ -38,5 +37,15 @@ interface ToDoDatabaseDao {
 
     @Query("UPDATE task SET category_name= :newName WHERE category_id = :id")
     fun updateCategoryTask(newName: String, id: Int)
+
+    @Query("UPDATE task SET id = :id , title = :title , description = :description , category_id = :category_id , category_name= :category_name WHERE id = :id")
+    suspend fun updateTask(id: Int, title : String, description : String, category_id : Int, category_name : String)
+
+    @Query("SELECT * FROM task WHERE category_name LIKE :text")
+    suspend fun getFilterTask(text : String) : List<Task>
+
+
+    @Query("SELECT * FROM task")
+    fun getAllTasks(): List<Task>
 
 }

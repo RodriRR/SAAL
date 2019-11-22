@@ -2,7 +2,6 @@ package com.saal.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.saal.data.database.ToDoDatabase
 import com.saal.data.database.ToDoDatabaseDao
 import com.saal.data.model.Category
@@ -28,29 +27,44 @@ interface DatabaseRepository {
 
     suspend fun updateCategory(category: Category)
 
+    fun getAllTask(): List<Task>
+    suspend fun getFilterTask(filter: String): List<Task>
+
+    suspend fun updateTask(task: Task)
+
 }
 
 class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
 
     private var todoDatabase: ToDoDatabaseDao
     private var categories: LiveData<List<Category>>
-    private var tasks: LiveData<List<Task>>
+    private var allTask: LiveData<List<Task>>
 
     init {
         val database: ToDoDatabase = ToDoDatabase.getInstance(application.applicationContext)
         todoDatabase = database.todoDatabaseDao
         categories = todoDatabase.getCategories()
-        tasks = todoDatabase.getTasks()
+        allTask = todoDatabase.getTasks()
+    }
+
+    override suspend fun updateTask(task: Task) {
+        todoDatabase.updateTask(task.id, task.title, task.description, task.category, task.category_name)
+    }
+
+    override fun getAllTask(): List<Task> {
+        return todoDatabase.getAllTasks()
+    }
+
+    override suspend fun getFilterTask(filter: String): List<Task> {
+        return todoDatabase.getFilterTask(filter)
     }
 
     override fun getCategories(): LiveData<List<Category>> {
-        println(categories.value.toString())
         return categories
     }
 
     override fun getTasks(): LiveData<List<Task>> {
-        println(tasks.value.toString())
-        return tasks
+        return allTask
     }
 
     override suspend fun insertNewTask(task: Task) {
@@ -77,6 +91,7 @@ class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
         todoDatabase.updateCategory(category.name, category.id)
         todoDatabase.updateCategoryTask(category.name, category.id)
     }
+
 
 }
 

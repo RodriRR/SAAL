@@ -37,7 +37,6 @@ class TaskFragment : Fragment() {
         val adapter = TasksAdapter(TasksListener { task: Task, view: Int ->
             when (view) {
                 1 -> {
-                    viewModel.clearEditTexts()
                     showDialogEdit(task)
                 }
                 2 -> viewModel.deleteTask(task)
@@ -54,18 +53,15 @@ class TaskFragment : Fragment() {
             }
         }
 
-
         binding.bar.setNavigationOnClickListener {
             showBottomSheet()
         }
 
-
         viewModel.categories.observe(this, Observer {
-            println(it)
         })
 
         viewModel.tasks.observe(this, Observer {
-            println(it)
+            viewModel.updateTaskToShow(viewModel.filter.value)
         })
 
 
@@ -124,7 +120,8 @@ class TaskFragment : Fragment() {
 
         binding.viewmodel = viewModel
         builder.setPositiveButton("Edit") { _, _ ->
-            viewModel.createNewTask(task.id)
+            viewModel.updateTask(task.id)
+            viewModel.updateTaskToShow(viewModel.filter.value)
         }
         builder.setNegativeButton("Cancel") { _, _ ->
         }

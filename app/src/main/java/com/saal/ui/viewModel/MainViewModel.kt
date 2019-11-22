@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.saal.data.model.Category
 import com.saal.data.model.Task
 import com.saal.data.repository.DatabaseRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * This is the app main ViewModel that contains all de ui data
@@ -17,6 +14,8 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
+
+    private val coroutineScopeMain = CoroutineScope(viewModelJob + Dispatchers.Main)
 
 
     var categories = repo.getCategories()
@@ -28,6 +27,32 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
 
     //Manage createTask
     val categorySelected = MutableLiveData<Category>()
+
+    val taskToShow = MutableLiveData<List<Task>>()
+    val filter = MutableLiveData<String>("")
+
+    fun updateTaskToShow(text : String?) {
+        if (text.isNullOrEmpty()) {
+            coroutineScopeMain.launch {
+                try {
+                    taskToShow.postValue(tasks.value)
+                } catch (e: Exception) {
+                    println(e)
+                }
+            }
+        } else {
+            coroutineScope.launch {
+                try {
+                    val tasks = repo.getFilterTask(text)
+                    withContext(Dispatchers.Main) {
+                        taskToShow.postValue(tasks)
+                    }
+                } catch (e: Exception) {
+                    println(e)
+                }
+            }
+        }
+    }
 
     fun createNewTask(id: Int) {
         coroutineScope.launch {
@@ -58,18 +83,6 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
         }
     }
 
-    fun createNewCategory(id: Int) {
-        coroutineScope.launch {
-            val name = nameNewCategory.value
-            val category = Category(id, name.toString())
-            try {
-                repo.insertNewCategory(category)
-            } catch (e: Exception) {
-                println(e)
-            }
-        }
-    }
-
     fun deleteCategory(category: Category) {
         coroutineScope.launch {
             try {
@@ -86,6 +99,37 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
             try {
                 category.name = nameNewCategory.value!!
                 repo.updateCategory(category)
+                nameNewCategory.postValue("")
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun insertNewCategory(category: Category) {
+        coroutineScope.launch {
+            try {
+                repo.insertNewCategory(category)
+                nameNewCategory.postValue("")
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun updateTask(id: Int) {
+        coroutineScope.launch {
+            val title = titleNewTask.value
+            val description = descriptionNewTask.value
+            val task = Task(
+                id,
+                title.toString(),
+                description.toString(),
+                categorySelected.value!!.id,
+                categorySelected.value!!.name
+            )
+            try {
+                repo.updateTask(task)
             } catch (e: Exception) {
                 println(e)
             }

@@ -12,8 +12,8 @@ import com.saal.data.model.Category
 import com.saal.databinding.FragmentCategoryBinding
 import com.saal.ui.adapters.CategoryAdapter
 import com.saal.ui.adapters.CategoryListener
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.view.inputmethod.InputMethodManager
+import android.graphics.Color
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -48,15 +48,13 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment() {
             showDialogEdit(it)
         }
 
+        binding.addCategoryEt.doOnTextChanged { text, _, _, _ ->
+            viewModel.updateTaskToShow(text.toString())
+        }
+
         //Control add button
         binding.addButton.setOnClickListener {
-            if (viewModel.nameNewCategory.value.isNullOrEmpty() || viewModel.nameNewCategory.value!!.trim() == "") {
-                showdialogError("Please enter a correct name")
-            } else {
-                viewModel.createNewCategory(0)
-            }
-            val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+            showDialogCreate()
         }
 
         //Set up Category adapter
@@ -98,6 +96,31 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private fun showdialogError(error: String) {
         MaterialAlertDialogBuilder(context).setTitle("Error").setMessage(error)
             .setPositiveButton("Ok") { _, _ -> }.show()
+    }
+
+    private fun showDialogCreate() {
+        val binding = ItemCreateCategoryBinding.inflate(layoutInflater)
+        val builder = MaterialAlertDialogBuilder(context, R.style.AlertDialogCustom)
+        builder.setView(binding.root)
+
+        binding.viewmodel = viewModel
+        builder.setPositiveButton("Create") { _, _ ->
+            if (viewModel.nameNewCategory.value.isNullOrEmpty() || viewModel.nameNewCategory.value!!.trim() == "") {
+                showdialogError("Please enter a correct name")
+            } else {
+                val category = Category(0, viewModel.nameNewCategory.value!!)
+                viewModel.insertNewCategory(category)
+            }
+        }
+        builder.setNegativeButton("Cancel") { _, _ ->
+        }
+        val dialog = builder.create()
+        dialog.show()
+        dialog.getButton(Dialog.BUTTON_NEGATIVE).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(Color.GRAY)
+        dialog.getButton(Dialog.BUTTON_POSITIVE).setTextColor(context!!.getColor(R.color.edit))
     }
 
 
