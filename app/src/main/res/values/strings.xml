@@ -8,6 +8,6 @@
     <string name="add_title">Add a title</string>
     <string name="add_description">Add a description</string>
     <string name="name">Name</string>
-    <string name="new">ADD NEW</string>
+    <string name="add_new">ADD NEW</string>
     <string name="categories">Categories</string>
 </resources>
