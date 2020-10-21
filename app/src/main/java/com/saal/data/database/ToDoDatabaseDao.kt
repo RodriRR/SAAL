@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.saal.data.model.Category
 import com.saal.data.model.Task
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Defines methods for using the ToDoDatabase class with Room.
@@ -16,6 +17,15 @@ interface ToDoDatabaseDao {
 
     @Query("SELECT * FROM task")
     fun getTasks(): LiveData<List<Task>>
+
+    @Query("SELECT * FROM task")
+    fun pruebaTask(): Flow<List<Task>>
+
+    @Query("SELECT * FROM task WHERE category_name LIKE :text")
+    fun pruebaTaskParameter(text : String) : Flow<List<Task>>
+
+    @Query("SELECT * FROM category")
+    fun pruebaCategories(): Flow<List<Category>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewTask(task: Task)

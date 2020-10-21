@@ -13,8 +13,11 @@ import com.saal.databinding.FragmentCategoryBinding
 import com.saal.ui.adapters.CategoryAdapter
 import com.saal.ui.adapters.CategoryListener
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.saal.R
@@ -48,14 +51,30 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment() {
             showDialogEdit(it)
         }
 
-        binding.addCategoryEt.doOnTextChanged { text, _, _, _ ->
-            viewModel.updateTaskToShow(text.toString())
-        }
+        binding.addCategoryEt.addTextChangedListener( object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.setSearchQuery(s.toString())
+            }
+
+        })
 
         //Control add button
         binding.addButton.setOnClickListener {
             showDialogCreate()
         }
+
+        viewModel.pruebaCategories.observe(this, Observer {
+            var adapter = binding.categoryList.adapter as CategoryAdapter
+            adapter.submitList(it)
+        })
 
         //Set up Category adapter
         val adapter = CategoryAdapter(clickListener)

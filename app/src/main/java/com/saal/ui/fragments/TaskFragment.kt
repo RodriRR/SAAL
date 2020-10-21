@@ -12,6 +12,7 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.saal.R
 import com.saal.data.model.Category
@@ -57,13 +58,10 @@ class TaskFragment : Fragment() {
             showBottomSheet()
         }
 
-        viewModel.categories.observe(this, Observer {
+        viewModel.flow.asLiveData().observe(this, Observer {
+            var adapter = binding.taskList.adapter as TasksAdapter
+            adapter.submitList(it)
         })
-
-        viewModel.tasks.observe(this, Observer {
-            viewModel.updateTaskToShow(viewModel.filter.value)
-        })
-
 
         binding.taskList.adapter = adapter
         binding.viewmodel = viewModel

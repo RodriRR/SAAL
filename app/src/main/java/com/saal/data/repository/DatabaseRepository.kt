@@ -6,6 +6,8 @@ import com.saal.data.database.ToDoDatabase
 import com.saal.data.database.ToDoDatabaseDao
 import com.saal.data.model.Category
 import com.saal.data.model.Task
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
  * This interface and class is responsible for storing the objects returned by the ToDoDatabse API
@@ -32,6 +34,10 @@ interface DatabaseRepository {
 
     suspend fun updateTask(task: Task)
 
+    fun pruebaTask() : Flow<List<Task>>
+    fun pruebaTaskParameter(parameter : String) : Flow<List<Task>>
+    fun pruebaCategories() : Flow<List<Category>>
+
 }
 
 class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
@@ -45,6 +51,22 @@ class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
         todoDatabase = database.todoDatabaseDao
         categories = todoDatabase.getCategories()
         allTask = todoDatabase.getTasks()
+    }
+
+    override fun pruebaTask(): Flow<List<Task>> {
+        return todoDatabase.pruebaTask()
+    }
+
+    override fun pruebaTaskParameter(parameter : String): Flow<List<Task>> {
+        return if(parameter.isNullOrEmpty()){
+            pruebaTask()
+        }else {
+            todoDatabase.pruebaTaskParameter(parameter)
+        }
+    }
+
+    override fun pruebaCategories(): Flow<List<Category>> {
+        return todoDatabase.pruebaCategories()
     }
 
     override suspend fun updateTask(task: Task) {

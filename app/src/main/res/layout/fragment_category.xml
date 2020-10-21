@@ -80,7 +80,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/space_10dp"
-                setListDataCategory="@{viewmodel.categories}"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/recyclerTitle"
                 app:layout_constraintLeft_toLeftOf="parent"

@@ -2,10 +2,16 @@ package com.saal.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.saal.data.model.Category
 import com.saal.data.model.Task
 import com.saal.data.repository.DatabaseRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
 
 /**
  * This is the app main ViewModel that contains all de ui data
@@ -17,6 +23,22 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
 
     private val coroutineScopeMain = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    var pruebaTask = repo.pruebaTask().asLiveData()
+    var pruebaCategories = repo.pruebaCategories().asLiveData()
+    private val searchChanel = ConflatedBroadcastChannel<String>()
+
+    val flow = searchChanel.asFlow().debounce(1000L).flatMapLatest { search ->
+        repo.pruebaTaskParameter(search)
+    }.flowOn(Dispatchers.IO)
+
+    fun setSearchQuery(search: String) {
+        //We use .offer() to send the element to all the subscribers.
+        searchChanel.offer(search)
+    }
+
+    init {
+        searchChanel.offer("")
+    }
 
     var categories = repo.getCategories()
     var tasks = repo.getTasks()
