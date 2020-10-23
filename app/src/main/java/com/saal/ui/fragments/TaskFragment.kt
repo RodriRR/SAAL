@@ -34,6 +34,8 @@ class TaskFragment : Fragment() {
     ): View? {
         val binding = FragmentTaskBinding.inflate(inflater)
 
+        viewModel.allCategories.observe(this, Observer {  })
+
         //Task Listener
         val adapter = TasksAdapter(TasksListener { task: Task, view: Int ->
             when (view) {
@@ -46,7 +48,7 @@ class TaskFragment : Fragment() {
 
         //+ button
         binding.floatingActionButton.setOnClickListener {
-            if (viewModel.categories.value.isNullOrEmpty()) {
+            if (viewModel.allCategories.value.isNullOrEmpty()) {
                 showDialogError("You have to add a category first")
             } else {
                 viewModel.clearEditTexts()
@@ -58,7 +60,7 @@ class TaskFragment : Fragment() {
             showBottomSheet()
         }
 
-        viewModel.flow.asLiveData().observe(this, Observer {
+        viewModel.allTasks.asLiveData().observe(this, Observer {
             var adapter = binding.taskList.adapter as TasksAdapter
             adapter.submitList(it)
         })
@@ -80,6 +82,11 @@ class TaskFragment : Fragment() {
         })
         binding.categoryList.adapter = adapter
         binding.categoryList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        viewModel.allCategories.observe(this, Observer {
+            var adapter = binding.categoryList.adapter as CategoryCreateTaskAdapter
+            adapter.submitList(it)
+        })
 
         binding.viewmodel = viewModel
         builder.setPositiveButton("Create") { _, _ ->
@@ -119,7 +126,6 @@ class TaskFragment : Fragment() {
         binding.viewmodel = viewModel
         builder.setPositiveButton("Edit") { _, _ ->
             viewModel.updateTask(task.id)
-            viewModel.updateTaskToShow(viewModel.filter.value)
         }
         builder.setNegativeButton("Cancel") { _, _ ->
         }

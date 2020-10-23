@@ -15,7 +15,6 @@ import com.saal.ui.adapters.CategoryListener
 import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -71,7 +70,7 @@ class CategoryBottomSheetDialogFragment : BottomSheetDialogFragment() {
             showDialogCreate()
         }
 
-        viewModel.pruebaCategories.observe(this, Observer {
+        viewModel.allCategories.observe(this, Observer {
             var adapter = binding.categoryList.adapter as CategoryAdapter
             adapter.submitList(it)
         })

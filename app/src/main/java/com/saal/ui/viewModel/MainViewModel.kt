@@ -1,8 +1,10 @@
 package com.saal.ui.viewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.saal.data.model.Category
 import com.saal.data.model.Task
 import com.saal.data.repository.DatabaseRepository
@@ -18,16 +20,10 @@ import kotlinx.coroutines.flow.flowOn
  */
 class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
 
-    private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
-
-    private val coroutineScopeMain = CoroutineScope(viewModelJob + Dispatchers.Main)
-
-    var pruebaTask = repo.pruebaTask().asLiveData()
-    var pruebaCategories = repo.pruebaCategories().asLiveData()
+    var allCategories = repo.pruebaCategories().asLiveData()
     private val searchChanel = ConflatedBroadcastChannel<String>()
 
-    val flow = searchChanel.asFlow().debounce(1000L).flatMapLatest { search ->
+    val allTasks = searchChanel.asFlow().debounce(1000L).flatMapLatest { search ->
         repo.pruebaTaskParameter(search)
     }.flowOn(Dispatchers.IO)
 
@@ -40,44 +36,17 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
         searchChanel.offer("")
     }
 
-    var categories = repo.getCategories()
-    var tasks = repo.getTasks()
-
-    val titleNewTask = MutableLiveData<String>("")
-    val descriptionNewTask = MutableLiveData<String>("")
-    val nameNewCategory = MutableLiveData<String>("")
+    val titleNewTask = MutableLiveData("")
+    val descriptionNewTask = MutableLiveData("")
+    val nameNewCategory = MutableLiveData("")
 
     //Manage createTask
     val categorySelected = MutableLiveData<Category>()
 
-    val taskToShow = MutableLiveData<List<Task>>()
     val filter = MutableLiveData<String>("")
 
-    fun updateTaskToShow(text : String?) {
-        if (text.isNullOrEmpty()) {
-            coroutineScopeMain.launch {
-                try {
-                    taskToShow.postValue(tasks.value)
-                } catch (e: Exception) {
-                    println(e)
-                }
-            }
-        } else {
-            coroutineScope.launch {
-                try {
-                    val tasks = repo.getFilterTask(text)
-                    withContext(Dispatchers.Main) {
-                        taskToShow.postValue(tasks)
-                    }
-                } catch (e: Exception) {
-                    println(e)
-                }
-            }
-        }
-    }
-
     fun createNewTask(id: Int) {
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val title = titleNewTask.value
             val description = descriptionNewTask.value
             val task = Task(
@@ -90,57 +59,57 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
             try {
                 repo.insertNewTask(task)
             } catch (e: Exception) {
-                println(e)
+                Log.e("ERROR: " , e.toString())
             }
         }
     }
 
     fun deleteTask(task: Task) {
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO){
             try {
                 repo.deleteTask(task)
             } catch (e: Exception) {
-                println(e)
+                Log.e("ERROR: " , e.toString())
             }
         }
     }
 
     fun deleteCategory(category: Category) {
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 repo.deleteTaskOfCategory(category)
                 repo.deleteCategory(category)
             } catch (e: Exception) {
-                println(e)
+                Log.e("ERROR: " , e.toString())
             }
         }
     }
 
     fun updateCategory(category: Category) {
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO){
             try {
                 category.name = nameNewCategory.value!!
                 repo.updateCategory(category)
                 nameNewCategory.postValue("")
             } catch (e: Exception) {
-                println(e)
+                Log.e("ERROR: " , e.toString())
             }
         }
     }
 
     fun insertNewCategory(category: Category) {
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 repo.insertNewCategory(category)
                 nameNewCategory.postValue("")
             } catch (e: Exception) {
-                println(e)
+                Log.e("ERROR: " , e.toString())
             }
         }
     }
 
     fun updateTask(id: Int) {
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val title = titleNewTask.value
             val description = descriptionNewTask.value
             val task = Task(
@@ -153,7 +122,7 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
             try {
                 repo.updateTask(task)
             } catch (e: Exception) {
-                println(e)
+                Log.e("ERROR: " , e.toString())
             }
         }
     }
@@ -166,6 +135,6 @@ class MainViewModel(private val repo: DatabaseRepository) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        viewModelJob.cancel()
+        viewModelScope.cancel()
     }
 }

@@ -16,23 +16,19 @@ import kotlinx.coroutines.flow.flow
  */
 interface DatabaseRepository {
 
-    fun getCategories(): LiveData<List<Category>>
-    fun getTasks(): LiveData<List<Task>>
-
-    suspend fun insertNewTask(task: Task)
-    suspend fun deleteTask(task: Task)
+    fun insertNewTask(task: Task)
+    fun deleteTask(task: Task)
 
     suspend fun insertNewCategory(category: Category)
-    suspend fun deleteCategory(category: Category)
+    fun deleteCategory(category: Category)
 
-    suspend fun deleteTaskOfCategory(category: Category)
+    fun deleteTaskOfCategory(category: Category)
 
-    suspend fun updateCategory(category: Category)
+    fun updateCategory(category: Category)
 
-    fun getAllTask(): List<Task>
     suspend fun getFilterTask(filter: String): List<Task>
 
-    suspend fun updateTask(task: Task)
+    fun updateTask(task: Task)
 
     fun pruebaTask() : Flow<List<Task>>
     fun pruebaTaskParameter(parameter : String) : Flow<List<Task>>
@@ -40,78 +36,55 @@ interface DatabaseRepository {
 
 }
 
-class DatabaseRepositoryImpl(application: Application) : DatabaseRepository {
-
-    private var todoDatabase: ToDoDatabaseDao
-    private var categories: LiveData<List<Category>>
-    private var allTask: LiveData<List<Task>>
-
-    init {
-        val database: ToDoDatabase = ToDoDatabase.getInstance(application.applicationContext)
-        todoDatabase = database.todoDatabaseDao
-        categories = todoDatabase.getCategories()
-        allTask = todoDatabase.getTasks()
-    }
+class DatabaseRepositoryImpl(private val todoDatabase : ToDoDatabase) : DatabaseRepository {
 
     override fun pruebaTask(): Flow<List<Task>> {
-        return todoDatabase.pruebaTask()
+        return todoDatabase.todoDatabaseDao.pruebaTask()
     }
 
     override fun pruebaTaskParameter(parameter : String): Flow<List<Task>> {
         return if(parameter.isNullOrEmpty()){
             pruebaTask()
         }else {
-            todoDatabase.pruebaTaskParameter(parameter)
+            todoDatabase.todoDatabaseDao.pruebaTaskParameter(parameter)
         }
     }
 
     override fun pruebaCategories(): Flow<List<Category>> {
-        return todoDatabase.pruebaCategories()
+        return todoDatabase.todoDatabaseDao.pruebaCategories()
     }
 
-    override suspend fun updateTask(task: Task) {
-        todoDatabase.updateTask(task.id, task.title, task.description, task.category, task.category_name)
-    }
-
-    override fun getAllTask(): List<Task> {
-        return todoDatabase.getAllTasks()
+    override fun updateTask(task: Task) {
+        todoDatabase.todoDatabaseDao.updateTask(task.id, task.title, task.description, task.category, task.category_name)
     }
 
     override suspend fun getFilterTask(filter: String): List<Task> {
-        return todoDatabase.getFilterTask(filter)
+        return todoDatabase.todoDatabaseDao.getFilterTask(filter)
     }
 
-    override fun getCategories(): LiveData<List<Category>> {
-        return categories
+    override fun insertNewTask(task: Task) {
+        todoDatabase.todoDatabaseDao.insertNewTask(task)
     }
 
-    override fun getTasks(): LiveData<List<Task>> {
-        return allTask
-    }
-
-    override suspend fun insertNewTask(task: Task) {
-        todoDatabase.insertNewTask(task)
-    }
-
-    override suspend fun deleteTask(task: Task) {
-        todoDatabase.deleteTask(task)
+    override fun deleteTask(task: Task) {
+        todoDatabase.todoDatabaseDao.deleteTask(task)
     }
 
     override suspend fun insertNewCategory(category: Category) {
-        todoDatabase.insertNewCategory(category)
+        todoDatabase.todoDatabaseDao.insertNewCategory(category)
     }
 
-    override suspend fun deleteCategory(category: Category) {
-        todoDatabase.deleteCategory(category)
+    override fun deleteCategory(category: Category) {
+        todoDatabase.todoDatabaseDao.deleteCategory(category)
     }
 
-    override suspend fun deleteTaskOfCategory(category: Category) {
-        todoDatabase.deleteTaskOfCategory(category.id)
+    override fun deleteTaskOfCategory(category: Category) {
+        todoDatabase.todoDatabaseDao.deleteTaskOfCategory(category.id)
     }
 
-    override suspend fun updateCategory(category: Category) {
-        todoDatabase.updateCategory(category.name, category.id)
-        todoDatabase.updateCategoryTask(category.name, category.id)
+    override fun updateCategory(category: Category) {
+        todoDatabase.todoDatabaseDao.updateCategory(category.name, category.id)
+        todoDatabase.todoDatabaseDao.updateCategoryTask(category.name, category.id)
     }
 
 
